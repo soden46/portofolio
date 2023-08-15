@@ -1,0 +1,45 @@
+{
+    "name": "sven/artisan-view",
+    "description": "Manage your views in Laravel projects through artisan",
+    "keywords": [
+        "artisan",
+        "laravel",
+        "views",
+        "templates",
+        "blade"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sven Luijten",
+            "email": "contact@svenluijten.com",
+            "homepage": "https://svenluijten.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "laravel/framework": "^8.0 || ^9.0 || ^10.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0 || ^10.0",
+        "graham-campbell/testbench": "^5.6",
+        "mockery/mockery": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sven\\ArtisanView\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sven\\ArtisanView\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sven\\ArtisanView\\ServiceProvider"
+            ]
+        }
+    }
+}
