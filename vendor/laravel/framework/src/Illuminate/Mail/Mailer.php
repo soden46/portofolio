@@ -2,6 +2,7 @@
 
 namespace Illuminate\Mail;
 
+use Closure;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Mail\Mailable as MailableContract;
 use Illuminate\Contracts\Mail\Mailer as MailerContract;
@@ -12,6 +13,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
 use InvalidArgumentException;
@@ -154,10 +156,15 @@ class Mailer implements MailerContract, MailQueueContract
      * Begin the process of mailing a mailable class instance.
      *
      * @param  mixed  $users
+     * @param  string|null  $name
      * @return \Illuminate\Mail\PendingMail
      */
-    public function to($users)
+    public function to($users, $name = null)
     {
+        if (! is_null($name) && is_string($users)) {
+            $users = new Address($users, $name);
+        }
+
         return (new PendingMail($this))->to($users);
     }
 
@@ -165,10 +172,15 @@ class Mailer implements MailerContract, MailQueueContract
      * Begin the process of mailing a mailable class instance.
      *
      * @param  mixed  $users
+     * @param  string|null  $name
      * @return \Illuminate\Mail\PendingMail
      */
-    public function cc($users)
+    public function cc($users, $name = null)
     {
+        if (! is_null($name) && is_string($users)) {
+            $users = new Address($users, $name);
+        }
+
         return (new PendingMail($this))->cc($users);
     }
 
@@ -176,10 +188,15 @@ class Mailer implements MailerContract, MailQueueContract
      * Begin the process of mailing a mailable class instance.
      *
      * @param  mixed  $users
+     * @param  string|null  $name
      * @return \Illuminate\Mail\PendingMail
      */
-    public function bcc($users)
+    public function bcc($users, $name = null)
     {
+        if (! is_null($name) && is_string($users)) {
+            $users = new Address($users, $name);
+        }
+
         return (new PendingMail($this))->bcc($users);
     }
 
@@ -312,14 +329,14 @@ class Mailer implements MailerContract, MailQueueContract
     /**
      * Parse the given view name or array.
      *
-     * @param  string|array  $view
+     * @param  \Closure|array|string  $view
      * @return array
      *
      * @throws \InvalidArgumentException
      */
     protected function parseView($view)
     {
-        if (is_string($view)) {
+        if (is_string($view) || $view instanceof Closure) {
             return [$view, null, null];
         }
 
@@ -372,12 +389,14 @@ class Mailer implements MailerContract, MailQueueContract
     /**
      * Render the given view.
      *
-     * @param  string  $view
+     * @param  \Closure|string  $view
      * @param  array  $data
      * @return string
      */
     protected function renderView($view, $data)
     {
+        $view = value($view, $data);
+
         return $view instanceof Htmlable
                         ? $view->toHtml()
                         : $this->views->make($view, $data)->render();

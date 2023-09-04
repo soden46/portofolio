@@ -18,17 +18,6 @@ class BatchesTableCommand extends Command
     protected $name = 'queue:batches-table';
 
     /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'queue:batches-table';
-
-    /**
      * The console command description.
      *
      * @var string
@@ -44,6 +33,8 @@ class BatchesTableCommand extends Command
 
     /**
      * @var \Illuminate\Support\Composer
+     *
+     * @deprecated Will be removed in a future Laravel version.
      */
     protected $composer;
 
@@ -76,8 +67,6 @@ class BatchesTableCommand extends Command
         );
 
         $this->components->info('Migration created successfully.');
-
-        $this->composer->dumpAutoloads();
     }
 
     /**

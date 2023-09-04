@@ -18,17 +18,6 @@ class NotificationTableCommand extends Command
     protected $name = 'notifications:table';
 
     /**
-     * The name of the console command.
-     *
-     * This name is used to identify the command during lazy loading.
-     *
-     * @var string|null
-     *
-     * @deprecated
-     */
-    protected static $defaultName = 'notifications:table';
-
-    /**
      * The console command description.
      *
      * @var string
@@ -44,6 +33,8 @@ class NotificationTableCommand extends Command
 
     /**
      * @var \Illuminate\Support\Composer
+     *
+     * @deprecated Will be removed in a future Laravel version.
      */
     protected $composer;
 
@@ -74,8 +65,6 @@ class NotificationTableCommand extends Command
         $this->files->put($fullPath, $this->files->get(__DIR__.'/stubs/notifications.stub'));
 
         $this->components->info('Migration created successfully.');
-
-        $this->composer->dumpAutoloads();
     }
 
     /**
