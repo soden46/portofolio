@@ -5,7 +5,7 @@
 <section class="section">
     <div class="card">
         <div class="card-header d-flex justify-content-end">
-            <a href="{{ route('blog.create') }}" class="btn btn-outline-success">+ Add New Portfolio</a>
+            <a href="{{ route('blog.create') }}" class="btn btn-outline-success">+ Tambah Artikel</a>
         </div>
         <div class="card-body">
             @if ($message = Session::get('success'))

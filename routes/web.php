@@ -10,6 +10,7 @@ use App\Http\Controllers\home\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\HubungiController;
+use App\Http\Controllers\JasaController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\SkillController;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,8 @@ Route::get('/force/logout', function () {
 
 // Home Controller
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::post('donate', [HomeController::class, 'donate']);
+Route::get('/#sawer', [HomeController::class, 'sawer'])->name('#sawer');
 
 Route::post('kirim-pesan', [HubungiController::class, 'storeContactForm'])->name('kirim-pesan');
 
@@ -124,6 +127,21 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+    // Jasa Admin Routes
+    Route::prefix('admin.jasa')->group(function () {
+        Route::controller(JasaController::class)->group(function () {
+            Route::get('/', 'index')->name('admin.jasa.index');
+            Route::get(
+                '/add',
+                'create'
+            )->name('admin.jasa.create');
+            Route::post('/store', 'store')->name('admin.jasa.store');
+            Route::get('/{id}/edit', 'edit')->name('admin.jasa.edit');
+            Route::put('/{id}/update', 'update')->name('admin.jasa.update');
+            Route::delete('/{id}/delete', 'destroy')->name('admin.jasa.destroy');
+        });
+    });
+
     // Message Routes
     Route::prefix('message')->group(function () {
         Route::controller(MessageController::class)->group(function () {
@@ -134,5 +152,6 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 });
+
 
 Auth::routes();

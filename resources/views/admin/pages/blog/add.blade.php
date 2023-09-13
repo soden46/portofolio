@@ -1,123 +1,52 @@
-@extends('admin.layouts.app')
-@section('title', 'Blog')
-
+@extends('admin.layouts.app',[
+'title' => 'Buat Postingan Baru',
+'pageTitle' => 'Buat Postingan Baru'
+])
 @section('content')
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                @if ($message = Session::get('success'))
-                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-                <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-                <script>
-                    Toastify({
-                        avatar: "{{ asset('assets/images/avatar.ico') }}",
-                        text: {
-                            !!json_encode($message) !!
-                        },
-                        duration: 5000,
-                        destination: "https://github.com/apvarun/toastify-js",
-                        newWindow: true,
-                        close: true,
-                        gravity: "bottom", // `top` or `bottom`
-                        position: "right", // `left`, `center` or `right`
-                        stopOnFocus: true, // Prevents dismissing of toast on hover
-                        style: {
-                            background: "#49b462",
-                            color: '#fff',
-                        },
-                        onClick: function() {} // Callback after click
-                    }).showToast();
-                </script>
-                @endif
-                <form class="forms-sample" method="POST" action="{{ route('blog.store') }}" enctype="multipart/form-data">
-                    @csrf
-                    @method('post')
-                    <div class="form-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group has-icon-left">
-                                    <label for="first-name-icon">Judul</label>
-                                    <div class="position-relative">
-                                        <input type="text" name="judul" class="form-control @error('judul') is-invalid @enderror" placeholder="Masukan judul" id="first-name-icon" value="{{ old('judul') }}" />
-                                        @error('judul')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group has-icon-left">
-                                    <label for="email-id-icon">Isi</label>
-                                    <div class="position-relative">
-                                        <textarea type="text" name="isi" class="form-control @error('isi') is-invalid @enderror" placeholder="Masukan isi" id="email-id-icon" value="{{ old('isi') }}"></textarea>
-                                        @error('isi')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="email-id-icon">Foto</label>
-                                    <div class="position-relative">
-                                        <input name="foto" class="form-control @error('foto') is-invalid @enderror" type="file" id="formFile" accept="foto/*" />
-                                        @error('foto')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="col-12 mt-2 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-outline-primary me-2 mb-1">
-                                        Submit
-                                    </button>
-                                    <button type="reset" class="btn btn-outline-secondary me-2 mb-1">
-                                        Reset
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                </form>
-            </div>
-        </div>
-    </div>
+@if ($message = Session::get('success'))
+<div class="alert alert-success">
+    <p>{{ $message }}</p>
 </div>
-@endsection
+@endif
+<div class="col-lg-8">
+    <form method="post" action="{{route('blog.store')}}" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group">
+            <label for="title">Judul</label>
+            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{old('title')}}">
+            @error('title')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
+        </div>
+        <div class="form-group">
+            <label for="slug">Slug</label>
+            <input type="text" class="form-control " id="slug" name="slug">
+        </div>
+        <div class="form-group">
+            <label for="foto">Foto</label>
+            <input type="file" class="form-control " id="foto" name="foto">
+        </div>
+        <div class="form-group">
+            <input id="body" type="hidden" name="body">
+            @error('body')
+            <p class="text-danger">{{$message}}</p>
+            @enderror
+            <trix-editor input="body"></trix-editor>
+        </div>
+        <button type="submit" class="btn btn-primary">Posting Artikel</button>
+    </form>
+</div>
 
-@section('js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    $(document).ready(function() {
-        var readURL = function(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+    const judul_artikel = document.querySelector('#title');
+    const slug = document.querySelector('#slug');
 
-                reader.onload = function(e) {
-                    $('#image').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $("#formFile").on('change', function() {
-            readURL(this);
-            // var filename = $('.file-upload-default').val().replace(/.*(\/|\\)/, '');
-
-            // $('.file-upload-info').val(filename);
-        });
-
-
+    judul_artikel.addEventListener('change', function() {
+        fetch('admin.blog.CheckSlug?title=' + title.value)
+            .then(response => response.json())
+            .then(data => slug.value = data.slug)
     });
 </script>
 @endsection

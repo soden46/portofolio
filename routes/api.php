@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\EducationController;
 use App\Http\Controllers\Api\ExperienceController;
 use App\Http\Controllers\Api\PortfolioController;
 use App\Http\Controllers\Api\SkillController;
+use App\Http\Controllers\home\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,3 +31,4 @@ Route::get('education', [EducationController::class, 'index']);
 Route::get('experience', [ExperienceController::class, 'index']);
 Route::get('portfolio', [PortfolioController::class, 'index']);
 Route::get('award', [AwardController::class, 'index']);
+Route::post('midtrans-callback', [HomeController::class, 'callback']);
