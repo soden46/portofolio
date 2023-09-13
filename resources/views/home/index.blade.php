@@ -305,8 +305,8 @@
 	<div class="container">
 		<div class="row justify-content-center py-5 mt-2">
 			<div class="col-md-12 heading-section text-center ftco-animate">
-				<h1 class="big big-2">Layanan</h1>
-				<h2 class="mb-4">Layanan</h2>
+				<h1 class="big big-2">Jasa Webdev</h1>
+				<h2 class="mb-4">Jasa</h2>
 				<p>Melayani Jasa Pembuatan Website Skripsi SI/TI & Company Profile</p>
 			</div>
 		</div>
