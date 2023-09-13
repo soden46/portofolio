@@ -17,7 +17,10 @@
 							<div class="badge bg-gradient-primary-to-secondary text-white mb-4">
 								<div class="text-uppercase">PHP · Laravel · Hosting . MYSQL</div>
 							</div>
-							<p><a href="#contact-section" class="btn btn-primary py-3 px-4">Rekrut Saya</a> <a href="#" class="btn btn-white btn-outline-white py-3 px-4">Pekerjaan Saya</a></p>
+							<p>
+								<a href="#contact-section" class="btn btn-primary py-3 px-4">Rekrut Saya</a>
+								<a href="#" class="btn btn-white btn-outline-white py-3 px-4">Pekerjaan Saya</a>
+							</p>
 						</div>
 					</div>
 				</div>
